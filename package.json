@@ -9,13 +9,15 @@
   "dependencies": {
     "react": "15.4.2",
     "react-native": "0.42.3",
-    "react-native-push-notification": "^2.2.1"
+    "react-native-push-notification": "^2.2.1",
+    "react-navigation": "^1.0.0-beta.7"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
     "jest": "19.0.2",
-    "react-test-renderer": "15.4.2"
+    "react-test-renderer": "15.4.2",
+    "standard": "^10.0.1"
   },
   "jest": {
     "preset": "react-native"
