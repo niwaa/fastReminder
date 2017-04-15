@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import {
   View,
-  Button,
-  StyleSheet
+  TouchableOpacity,
+  StyleSheet,
+  Text
 } from 'react-native'
 
 var moment = require('moment')
@@ -11,14 +12,21 @@ export default class TimeScreen extends Component {
   constructor (props) {
     super(props)
 
+    const { params } = this.props.navigation.state
+
+    var roundedTime = this.roundMoment(moment().add(2, 'h'), moment.duration(15, "minutes"), "ceil")
+
     this.state = {
-      time1: 'in 30min',
-      time2: 'in 1 hour',
-      time3: moment().add(2, 'h').format('h:m a'),
-      time4: moment().add(4, 'h').format('h:m a'),
-      time5: moment().add(6, 'h').format('h:m a'),
-      time6: moment().add(8, 'h').format('h:m a'),
-      time7: moment().add(10, 'h').format('h:m a')
+
+      dateObject: params.dateObject,
+      times: [
+        {label: 'in 30 min', value: moment().add(30, 'm').format('hh:mm a')},
+        {label: 'in 1 hour', value: moment().add(30, 'm').format('hh:mm a')},
+        {label: this.roundMomentAsWanted(moment().add(2, 'h')).format('hh:mm a'), value: moment().add(2, 'h').toObject()},
+        {label: moment().add(4, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()},
+        {label: moment().add(6, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()},
+        {label: moment().add(8, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()}
+      ]
       /*
         in 30 minute
         in 1 hour
@@ -38,62 +46,34 @@ export default class TimeScreen extends Component {
     }
   }
 
-  _goToNextScreen () {
+  componentDidMount () {
+    console.log('xxx', this.state.dateObject)
+  }
+
+  roundMoment (date, duration, method) {
+    return moment(Math[method]((+date) / (+duration)) * (+duration))
+  }
+
+  roundMomentAsWanted (momentObj) {
+    return this.roundMoment(momentObj, moment.duration(30, 'minutes'), 'ceil')
+  }
+
+  _goToNextScreen (dateObject) {
     this.props.navigation.navigate('CommentScreen')
   }
 
   render () {
     return (
       <View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time1}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time2}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time3}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time4}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time5}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time6}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title={this.state.time7}
-            onPress={() => this._goToNextScreen()}
-            style={styles.button}
-          />
-        </View>
+        {this.state.times.map((time, i) => {
+          return (
+            <TouchableOpacity key={i} onPress={() => this._goToNextScreen(time.value)}>
+              <View style={styles.buttonContainer}>
+                <Text style={styles.label}>{time.label}</Text>
+              </View>
+            </TouchableOpacity>
+          )
+        })}
       </View>
     )
   }
@@ -101,9 +81,12 @@ export default class TimeScreen extends Component {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    margin: 10
+    margin: 1,
+    padding: 10,
+    height: 60,
+    backgroundColor: '#cccccc'
   },
-  button: {
-    height: 80
+  label: {
+    fontSize: 20
   }
 })
