@@ -14,18 +14,27 @@ export default class TimeScreen extends Component {
 
     const { params } = this.props.navigation.state
 
-    var roundedTime = this.roundMoment(moment().add(2, 'h'), moment.duration(15, "minutes"), "ceil")
+    // var roundedTime = this.roundMoment(moment().add(2, 'h'), moment.duration(15, "minutes"), "ceil")
+
+    let roundedTimes = {
+      '30min': moment().add(20, 's'),
+      '1h': moment().add(1, 'h'),
+      '2h': this.roundMomentAsWanted(moment().add(2, 'h')),
+      '4h': this.roundMomentAsWanted(moment().add(4, 'h')),
+      '6h': this.roundMomentAsWanted(moment().add(6, 'h')),
+      '8h': this.roundMomentAsWanted(moment().add(8, 'h'))
+    }
 
     this.state = {
-
+      dateLabel: params.dateLabel,
       dateObject: params.dateObject,
       times: [
-        {label: 'in 30 min', value: moment().add(30, 'm').format('hh:mm a')},
-        {label: 'in 1 hour', value: moment().add(30, 'm').format('hh:mm a')},
-        {label: this.roundMomentAsWanted(moment().add(2, 'h')).format('hh:mm a'), value: moment().add(2, 'h').toObject()},
-        {label: moment().add(4, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()},
-        {label: moment().add(6, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()},
-        {label: moment().add(8, 'h').format('hh:mm a'), value: moment().add(4, 'h').toObject()}
+        {label: 'in 30 min', value: roundedTimes['30min'].toObject()},
+        {label: 'in 1 hour', value: roundedTimes['1h'].toObject()},
+        {label: roundedTimes['2h'].format('hh:mm a'), value: roundedTimes['2h'].toObject()},
+        {label: roundedTimes['4h'].format('hh:mm a'), value: roundedTimes['4h'].toObject()},
+        {label: roundedTimes['6h'].format('hh:mm a'), value: roundedTimes['6h'].toObject()},
+        {label: roundedTimes['8h'].format('hh:mm a'), value: roundedTimes['8h'].toObject()}
       ]
       /*
         in 30 minute
@@ -46,25 +55,32 @@ export default class TimeScreen extends Component {
     }
   }
 
-  componentDidMount () {
-    console.log('xxx', this.state.dateObject)
-  }
-
   roundMoment (date, duration, method) {
     return moment(Math[method]((+date) / (+duration)) * (+duration))
   }
 
   roundMomentAsWanted (momentObj) {
-    return this.roundMoment(momentObj, moment.duration(30, 'minutes'), 'ceil')
+    return this.roundMoment(momentObj, moment.duration(60, 'minutes'), 'ceil')
   }
 
-  _goToNextScreen (dateObject) {
-    this.props.navigation.navigate('CommentScreen')
+  _goToNextScreen (value) {
+    let ajustedDateObject = {
+      date: this.state.dateObject.date,
+      months: this.state.dateObject.months,
+      years: this.state.dateObject.years,
+      hours: value.hours,
+      minutes: value.minutes,
+      seconds: value.seconds,
+      milliseconds: 0
+    }
+    console.log('ajustedDateObject', ajustedDateObject)
+    this.props.navigation.navigate('CommentScreen', {dateObject: ajustedDateObject})
   }
 
   render () {
     return (
       <View>
+        <Text>{this.state.dateLabel}</Text>
         {this.state.times.map((time, i) => {
           return (
             <TouchableOpacity key={i} onPress={() => this._goToNextScreen(time.value)}>

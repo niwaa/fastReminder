@@ -8,15 +8,19 @@ import Reminder from '../reminder'
 var reminder = new Reminder()
 
 export default class CommentScreen extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
+
+    const { params } = this.props.navigation.state
+
     this.state = {
-      comment: ''
+      dateObject: params.dateObject,
+      comment: 'test'
     }
   }
 
   _save () {
-    reminder.addReminder(this.state.comment, null)
+    reminder.addReminder(this.state.comment, this.state.dateObject)
     this.props.navigation.navigate('ListScreen')
   }
 
