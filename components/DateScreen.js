@@ -32,9 +32,15 @@ export default class DateScreen extends Component {
     this.props.navigation.navigate('TimeScreen', {dateObject: value, dateLabel: label})
   }
 
+  _goToListScreen (value) {
+    this.props.navigation.navigate('ListScreen')
+  }
+
   render () {
     return (
       <View>
+        <Button onPress={() => this._goToListScreen()}
+          title='List' />
         {this.state.dates.map((date, i) => {
           return (
             <TouchableOpacity key={i} onPress={() => this._goToNextScreen(date.value, date.label)}>

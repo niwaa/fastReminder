@@ -68,9 +68,7 @@ export default class app extends Component {
 
 class DateScreenExt extends React.Component {
   static navigationOptions = {
-      header: {
-        visible: false
-      }
+    headerVisible: false
   }
 
   render() {
@@ -82,9 +80,7 @@ class DateScreenExt extends React.Component {
 
 class TimeScreenExt extends React.Component {
   static navigationOptions = {
-      header: {
-        visible: false
-      }
+    headerVisible: false
   }
 
   render() {
@@ -96,9 +92,7 @@ class TimeScreenExt extends React.Component {
 
 class CommentScreenExt extends React.Component {
   static navigationOptions = {
-      header: {
-        visible: false
-      }
+    headerVisible: false
   }
 
   render() {
@@ -110,9 +104,7 @@ class CommentScreenExt extends React.Component {
 
 class ListScreenExt extends React.Component {
   static navigationOptions = {
-      header: {
-        visible: false
-      }
+    headerVisible: false
   }
 
   render() {

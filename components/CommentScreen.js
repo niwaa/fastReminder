@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   Button,
   View,
-  TextInput
+  TextInput,
+  Text
 } from 'react-native'
 import Reminder from '../reminder'
 var reminder = new Reminder()
@@ -14,19 +15,24 @@ export default class CommentScreen extends Component {
     const { params } = this.props.navigation.state
 
     this.state = {
+      dateLabel: params.dateLabel,
       dateObject: params.dateObject,
       comment: 'test'
     }
   }
 
   _save () {
+    let _this = this
     reminder.addReminder(this.state.comment, this.state.dateObject)
-    this.props.navigation.navigate('ListScreen')
+      .then(function () {
+        _this.props.navigation.navigate('ListScreen')
+      })
   }
 
   render () {
     return (
       <View>
+        <Text>{this.state.dateLabel}</Text>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(comment) => this.setState({comment})}
