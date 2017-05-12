@@ -21,17 +21,18 @@ export default class ListScreen extends Component {
     }
 
     this.loadData()
-
   }
 
   loadData () {
     AsyncStorage.getItem('reminders', (err, result) => {
       if (result !== null) {
         this.setState({dataSource: this.ds.cloneWithRows(JSON.parse(result))})
-        console.log('reminders store', JSON.parse(result))
-      }
-      else {
+      } else {
         this.setState({dataSource: this.ds.cloneWithRows(this.defaultData)})
+      }
+
+      if (err) {
+        console.err(err)
       }
     })
   }
@@ -55,6 +56,8 @@ export default class ListScreen extends Component {
           />
         <Button title='Clear'
           onPress={() => this._clearAllReminders()} />
+        <Button title='+'
+          onPress={() => this.props.navigation.navigate('DateScreen')} />
       </View>
     )
   }

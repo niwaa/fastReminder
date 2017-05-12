@@ -6,7 +6,8 @@
 
 import React, { Component } from 'react'
 import {
-  AppRegistry
+  AppRegistry,
+  DeviceEventEmitter
 } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import DateScreen from './components/DateScreen'
@@ -15,7 +16,25 @@ import CommentScreen from './components/CommentScreen'
 import ListScreen from './components/ListScreen'
 
 
-var PushNotification = require('react-native-push-notification')
+import PushNotification from 'react-native-push-notification'
+import PushNotificationAndroid from 'react-native-push-notification'
+
+
+(function() {
+  // Register all the valid actions for notifications here and add the action handler for each action
+  PushNotificationAndroid.registerNotificationActions(['Accept','Reject','Yes','No']);
+  DeviceEventEmitter.addListener('notificationActionReceived', function(action){
+    console.log ('Notification action received: ' + action);
+    const info = JSON.parse(action.dataJSON);
+    if (info.action == 'Accept') {
+      // Do work pertaining to Accept action here
+    } else if (info.action == 'Reject') {
+      // Do work pertaining to Reject action here
+    }
+    // Add all the required actions handlers
+  });
+})();
+
 
 PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
@@ -54,6 +73,11 @@ export default class app extends Component {
 
 
     PushNotification.setApplicationIconBadgeNumber(5)
+
+
+
+
+
   }
 
 

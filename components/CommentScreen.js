@@ -17,7 +17,7 @@ export default class CommentScreen extends Component {
     this.state = {
       dateLabel: params.dateLabel,
       dateObject: params.dateObject,
-      comment: 'test'
+      comment: ''
     }
   }
 

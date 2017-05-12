@@ -1,4 +1,4 @@
-package com.fastreminder;
+package com.fastreminder.alarm;
 
 import com.facebook.react.ReactActivity;
 
